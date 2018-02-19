@@ -26,13 +26,11 @@
   {% for employee in employees %}
   <div style='width:33%; padding: 10px;'>
     <form method='POST' action='/employees/{{ employee.id }}?_method=PUT' style='width: 90%'>
-      <strong>Employee Email:</strong>
+      <h4><strong>{{ employee.emailLocalPart }}</strong> <span class="small text-info">(email local-part)</span></h4>
+      <p><strong>{{ employee.emailDomain }}</strong> <span class="small text-info">(email domain)</span></p>
+      <em>Employee Email:</em>
       <input class='form-control' value='{{ employee.email }}' name='email' />
-      <p class="muted small text-info">
-        <strong>Email local-part:</strong> {{ employee.emailLocalPart }}<br />
-        <strong>Employee domain:</strong> {{ employee.emailDomain }}
-      </p>
-      Manager Email:
+      <em>Manager Email:</em>
       <select name='managerId' class='form-control'>
         <option value='-1'>None</option>
 
@@ -45,7 +43,7 @@
       </select>
       <button class='btn btn-primary' style='margin-top:10px'>Update</button>
     </form>
-    <form method='POST' action='/employees/6?_method=DELETE'>
+    <form method='POST' action='/employees/{{employee.id}}?_method=DELETE'>
       <button class='btn btn-warning'>Delete</button>
     </form>
 

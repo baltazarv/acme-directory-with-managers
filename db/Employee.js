@@ -2,7 +2,12 @@ const conn = require('./conn');
 const { Sequelize } = conn;
 
 const Employee = conn.define('employee', {
-  email: Sequelize.STRING
+  email: {
+    type: Sequelize.STRING,
+    validate: {
+      isEmail: true
+    }
+  }
 }, {
   getterMethods: {
     emailLocalPart: function() {

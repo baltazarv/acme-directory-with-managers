@@ -46,19 +46,43 @@ router.get('/employees', (req, res, next) => {
 });
 
 router.post('/employees', (req, res, next) => {
-  console.log(req.body);
   Employee.findOrCreate({
     where: { email: req.body.email }
   })
   .spread((employee, wasCreated) => {
-    // console.log(employee, wasCreated);
     if (req.body.managerId) {
       employee.managerId = req.body.managerId;
       employee.save();
     }
-    // res.send(employee);
   })
-  .then(() => res.redirect('/employees'));
+  .then(() => res.redirect('/employees'))
+  .catch((error) => {
+    res.locals.path = '/error';
+    res.render('error', { error });
+  });
+});
+
+router.put('/employees/:id', (req, res, next) => {
+  Employee.findById(req.params.id)
+  .then(employee => {
+    if ((req.body.managerId) == -1) {
+      employee.managerId = null;
+    } else {
+      Object.assign(employee, req.body);
+    }
+    employee.save();
+  })
+  .then(() => res.redirect('/employees'))
+  .catch(next);
+});
+
+router.delete('/employees/:id', (req, res, next) => {
+  Employee.findById(req.params.id)
+  .then(employee => {
+    employee.destroy();
+  })
+  .then(() => res.redirect('/employees'))
+  .catch(next);
 });
 
 module.exports = router;
