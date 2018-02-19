@@ -1,0 +1,58 @@
+{% extends './layout.html' %}
+
+{% block content %}
+    <div style='display: flex; flex-wrap: wrap'>
+    <div style='width: 33%; background-color: #efefef;'>
+    <form method='POST' action='/employees' style='margin:10px;'>
+      <h5>Add an Employee</h5>
+      <strong>Employee Email</strong> (must be valid email):
+      <input class='form-control' name='email' />
+      <br />
+      <strong>Manager:</strong>
+      <select name='managerId' class='form-control'>
+        <option value='-1'>None</option>
+
+        {% for employee in employees %}
+        <option value='{{ employee.id }}'>
+        {{ employee.email }}
+        </option>
+        {% endfor %}
+
+      </select>
+      <button class='btn btn-primary' style='margin-top:10px'>Create</button>
+    </form>
+    </div>
+
+  {% for employee in employees %}
+  <div style='width:33%; padding: 10px;'>
+    <form method='POST' action='/employees/{{ employee.id }}?_method=PUT' style='width: 90%'>
+      <strong>Employee Email:</strong>
+      <input class='form-control' value='{{ employee.email }}' name='email' />
+      <p class="muted small text-info">
+        <strong>Email local-part:</strong> {{ employee.emailLocalPart }}<br />
+        <strong>Employee domain:</strong> {{ employee.emailDomain }}
+      </p>
+      Manager Email:
+      <select name='managerId' class='form-control'>
+        <option value='-1'>None</option>
+
+        {% for manager in employees %}
+        <option {% if manager.id === employee.managerId %}selected{% endif %} value='{{ manager.id }}'>
+        {{ manager.email }}
+        </option>
+        {% endfor %}
+
+      </select>
+      <button class='btn btn-primary' style='margin-top:10px'>Update</button>
+    </form>
+    <form method='POST' action='/employees/6?_method=DELETE'>
+      <button class='btn btn-warning'>Delete</button>
+    </form>
+
+    {% if employee.manages.length > 0 %}{{ employee.emailLocalPart }} manages: <p>{% for subordinate in employee.manages %} <span class='badge badge-success'>{{ subordinate.email }} </span> {% endfor %}</p>{% endif %}
+
+  </div>
+  {% endfor %}
+
+    </div>
+{% endblock %}

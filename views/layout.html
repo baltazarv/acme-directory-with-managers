@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <link rel='stylesheet' href='/vendor/bootstrap/dist/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='/css/styles.css' />
+    <title>ACME</title>
+  </head>
+  <body>
+    <div class='container'>
+      <ul class='nav nav-pills'>
+        <li class='nav-item'>
+          <a class='nav-link{% if path === "/" %} active{% endif %}' href='/'>Home</a>
+        </li>
+        <li class='nav-item'>
+          <a class='nav-link{% if path === "/employees" %} active{% endif %}' href='/employees'>Employees</a>
+        </li>
+      </ul>
+      <div>
+        <hr />
+        <strong>We have {{ employeeCount }} employees and {{ managerCount }} managers!</strong>
+        <hr />
+      </div>
+      {% block content %}
+
+      {% endblock %}
+    </div><!-- container -->
+  </body>
+</html>
